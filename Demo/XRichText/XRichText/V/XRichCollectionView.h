@@ -7,8 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XKeyBoard.h"
+#import "XRichTextImageCell.h"
+#import "XRichTextCell.h"
 
-@interface XRichCollectionView : UICollectionView<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+@protocol XRichCollectionViewDelegate <NSObject>
+
+-(void)textHeightChange;
+
+@end
+
+@interface XRichCollectionView : UICollectionView<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,KeyBoardDlegate,XRichTextCellDelegate>
 
 @property(nonatomic,strong) NSMutableArray *dataArray;
 
@@ -16,6 +25,12 @@
  * 添加图片
  */
 -(void)addImage:(UIImage *)image;
+/*
+ * 添加文字
+ */
+-(void)addText:(NSString *)text;
+
+@property (nonatomic, strong) id<XRichCollectionViewDelegate> collectionDelegate;
 
 @end
 

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "XRichBottomView.h"
+#import "XRichCollectionView.h"
 
 @protocol XRichTextInputViewDelegate <NSObject>
 
@@ -16,7 +17,7 @@
 -(void)XRichchoiceText;    //选择文本
 @end
 
-@interface XRichTextInputView : UIView<XRichBottomViewDelegate>
+@interface XRichTextInputView : UIView<XRichBottomViewDelegate,XRichCollectionViewDelegate>
 
 // 禁止使用initWithFrame以外的方法进行初始化
 -(instancetype) init __attribute__((unavailable("init not available, initWithFrame instead")));
@@ -29,5 +30,9 @@
  * 添加图片
  */
 -(void)addImage:(UIImage *)image;
+/*
+ * 添加文字
+ */
+-(void)addText:(NSString *)text;
 
 @end

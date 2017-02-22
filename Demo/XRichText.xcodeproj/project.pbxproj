@@ -28,7 +28,9 @@
 		2AB4739B1E5C4CCE00A2F896 /* XRichBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB4739A1E5C4CCE00A2F896 /* XRichBottomView.m */; };
 		2AB4739E1E5C5B6E00A2F896 /* XRichCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB4739D1E5C5B6E00A2F896 /* XRichCollectionView.m */; };
 		2AB473A31E5C986400A2F896 /* XRichTextImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB473A21E5C986400A2F896 /* XRichTextImageCell.m */; };
-		2AB473A61E5CA5EE00A2F896 /* XRichCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB473A51E5CA5EE00A2F896 /* XRichCollectionViewFlowLayout.m */; };
+		2AB473A91E5D4D0500A2F896 /* XRichTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB473A81E5D4D0500A2F896 /* XRichTextCell.m */; };
+		2AB473AE1E5D515A00A2F896 /* XKeyBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB473AD1E5D515A00A2F896 /* XKeyBoard.m */; };
+		2ACA68AB1E5DDAC8002C218F /* XRichCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ACA68AA1E5DDAC8002C218F /* XRichCollectionViewFlowLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,8 +87,12 @@
 		2AB4739D1E5C5B6E00A2F896 /* XRichCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XRichCollectionView.m; sourceTree = "<group>"; };
 		2AB473A11E5C986400A2F896 /* XRichTextImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XRichTextImageCell.h; sourceTree = "<group>"; };
 		2AB473A21E5C986400A2F896 /* XRichTextImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XRichTextImageCell.m; sourceTree = "<group>"; };
-		2AB473A41E5CA5EE00A2F896 /* XRichCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XRichCollectionViewFlowLayout.h; sourceTree = "<group>"; };
-		2AB473A51E5CA5EE00A2F896 /* XRichCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XRichCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		2AB473A71E5D4D0500A2F896 /* XRichTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XRichTextCell.h; sourceTree = "<group>"; };
+		2AB473A81E5D4D0500A2F896 /* XRichTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XRichTextCell.m; sourceTree = "<group>"; };
+		2AB473AC1E5D515A00A2F896 /* XKeyBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XKeyBoard.h; sourceTree = "<group>"; };
+		2AB473AD1E5D515A00A2F896 /* XKeyBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XKeyBoard.m; sourceTree = "<group>"; };
+		2ACA68A91E5DDAC8002C218F /* XRichCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XRichCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		2ACA68AA1E5DDAC8002C218F /* XRichCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XRichCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +189,7 @@
 		2AB4737B1E5BE5DF00A2F896 /* XRichText */ = {
 			isa = PBXGroup;
 			children = (
+				2AB473AA1E5D515A00A2F896 /* M */,
 				2AB473981E5C4C9700A2F896 /* V */,
 				2AB473871E5C466800A2F896 /* Images */,
 				2AB4737C1E5BE65600A2F896 /* XRichTextInputView.h */,
@@ -226,13 +233,13 @@
 		2AB473981E5C4C9700A2F896 /* V */ = {
 			isa = PBXGroup;
 			children = (
+				2ACA68A91E5DDAC8002C218F /* XRichCollectionViewFlowLayout.h */,
+				2ACA68AA1E5DDAC8002C218F /* XRichCollectionViewFlowLayout.m */,
 				2AB473A01E5C984500A2F896 /* cell */,
 				2AB473991E5C4CCE00A2F896 /* XRichBottomView.h */,
 				2AB4739A1E5C4CCE00A2F896 /* XRichBottomView.m */,
 				2AB4739C1E5C5B6E00A2F896 /* XRichCollectionView.h */,
 				2AB4739D1E5C5B6E00A2F896 /* XRichCollectionView.m */,
-				2AB473A41E5CA5EE00A2F896 /* XRichCollectionViewFlowLayout.h */,
-				2AB473A51E5CA5EE00A2F896 /* XRichCollectionViewFlowLayout.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -242,8 +249,27 @@
 			children = (
 				2AB473A11E5C986400A2F896 /* XRichTextImageCell.h */,
 				2AB473A21E5C986400A2F896 /* XRichTextImageCell.m */,
+				2AB473A71E5D4D0500A2F896 /* XRichTextCell.h */,
+				2AB473A81E5D4D0500A2F896 /* XRichTextCell.m */,
 			);
 			path = cell;
+			sourceTree = "<group>";
+		};
+		2AB473AA1E5D515A00A2F896 /* M */ = {
+			isa = PBXGroup;
+			children = (
+				2AB473AB1E5D515A00A2F896 /* XKeyboard */,
+			);
+			path = M;
+			sourceTree = "<group>";
+		};
+		2AB473AB1E5D515A00A2F896 /* XKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				2AB473AC1E5D515A00A2F896 /* XKeyBoard.h */,
+				2AB473AD1E5D515A00A2F896 /* XKeyBoard.m */,
+			);
+			path = XKeyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -391,14 +417,16 @@
 			files = (
 				2AB473501E5BE46800A2F896 /* ViewController.m in Sources */,
 				2AB473821E5BE70700A2F896 /* inputViewController.m in Sources */,
-				2AB473A61E5CA5EE00A2F896 /* XRichCollectionViewFlowLayout.m in Sources */,
 				2AB4737E1E5BE65600A2F896 /* XRichTextInputView.m in Sources */,
 				2AB473A31E5C986400A2F896 /* XRichTextImageCell.m in Sources */,
 				2AB4739B1E5C4CCE00A2F896 /* XRichBottomView.m in Sources */,
 				2AB473861E5BE71E00A2F896 /* outputViewController.m in Sources */,
+				2AB473AE1E5D515A00A2F896 /* XKeyBoard.m in Sources */,
 				2AB4739E1E5C5B6E00A2F896 /* XRichCollectionView.m in Sources */,
 				2AB4734D1E5BE46800A2F896 /* AppDelegate.m in Sources */,
+				2ACA68AB1E5DDAC8002C218F /* XRichCollectionViewFlowLayout.m in Sources */,
 				2AB4734A1E5BE46800A2F896 /* main.m in Sources */,
+				2AB473A91E5D4D0500A2F896 /* XRichTextCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -27,11 +27,9 @@
 
 -(void)initUI{
     _bottom_width = self.frame.size.width;
-    self.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.layer.shadowOffset = CGSizeMake(0, -3);
-    self.layer.shadowOpacity = .5f;
-    self.layer.shadowRadius = 3.f;
     self.backgroundColor = [UIColor whiteColor];
+    self.layer.borderWidth = 1;
+    self.layer.borderColor = [[UIColor grayColor] CGColor];
     
     _insertImage = [[UIButton alloc]initWithFrame:CGRectMake((_bottom_width-100)/2, 6, 30, 30)];
     _insertText = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_insertImage.frame)+40, 6, 30, 30)];

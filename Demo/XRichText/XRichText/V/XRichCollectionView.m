@@ -7,7 +7,7 @@
 //
 
 #import "XRichCollectionView.h"
-#import "XRichTextImageCell.h"
+
 static NSString *ImageCellIdentify = @"ImageCellIdentify";
 static NSString *TextCellIdentify = @"TextCellIdentify";
 
@@ -22,8 +22,11 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     _dataArray = [@[] mutableCopy];
     self.backgroundColor = [UIColor whiteColor];
     [self registerClass:[XRichTextImageCell class] forCellWithReuseIdentifier:ImageCellIdentify];
+    [self registerClass:[XRichTextCell class] forCellWithReuseIdentifier:TextCellIdentify];
     self.delegate = self;
     self.dataSource = self;
+    [XKeyBoard registerKeyBoardHide:self];
+    [XKeyBoard registerKeyBoardShow:self];
 }
 
 /*
@@ -31,7 +34,15 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
  */
 -(void)addImage:(UIImage *)image{
     image = [image imageCompress:1000];
-    NSDictionary *data = @{@"flag":@"1",@"height":@(image.size.height),@"width":@(image.size.width),@"image":image};
+    NSMutableDictionary *data = [@{@"flag":@"1",@"height":@(image.size.height),@"width":@(image.size.width),@"image":image} mutableCopy];
+    [_dataArray addObject:data];
+    [self reloadData];
+}
+/*
+ * 添加文字
+ */
+-(void)addText:(NSString *)text{
+    NSMutableDictionary *data = [@{@"flag":@"2",@"height":@(60),@"text":text} mutableCopy];
     [_dataArray addObject:data];
     [self reloadData];
 }
@@ -41,14 +52,54 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
 
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *data = _dataArray[indexPath.row];
-    XRichTextImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellIdentify forIndexPath:indexPath];
-    [cell initImageView];
-    cell.dataSource = data;
-    return cell;
+    NSMutableDictionary *data = _dataArray[indexPath.row];
+    if ([data[@"flag"] isEqualToString:@"1"]) {   //表明是图片
+        XRichTextImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellIdentify forIndexPath:indexPath];
+        cell.dataSource = data;
+        return cell;
+    }else{
+        __weak XRichCollectionView *wself = self;
+        XRichTextCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:TextCellIdentify forIndexPath:indexPath];
+        cell.dataSource = data;
+        cell.delegate = self;
+        cell.refreshBlock = ^{
+            [wself reloadData];
+        };
+        return cell;
+    }
+    
 }
 
+#pragma  mark - KeyBoardDlegate
+
+-(void)keyboardWillHideNotification:(NSNotification *)notification{
+    double keyboardDuration = [XKeyBoard returnKeyBoardDuration:notification];
+    
+    [UIView animateWithDuration:keyboardDuration animations:^{
+        [self setContentInset:UIEdgeInsetsZero];
+    }];
+}
+-(void)keyboardWillShowNotification:(NSNotification *)notification{
+    
+    CGRect keyboardWindow = [XKeyBoard returnKeyBoardWindow:notification];
+    double keyboardDuration = [XKeyBoard returnKeyBoardDuration:notification];
+    [UIView animateWithDuration:keyboardDuration animations:^{
+        [self setContentInset:UIEdgeInsetsMake(0, 0, keyboardWindow.size.height, 0)];
+        
+    }];
+}
+
+#pragma mark - XRichTextCellDelegate
+-(void)textHeightChange{
+    [_collectionDelegate textHeightChange];
+}
 @end
+
+
+
+
+
+
 
 
 
@@ -69,5 +120,6 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     UIGraphicsEndImageContext();
     return newImage;
 }
+
 
 @end

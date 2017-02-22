@@ -47,7 +47,7 @@
 
 }
 -(void)XRichchoiceText{    //选择文本
-
+    [_richTextView addText:@""];
 }
 /*
  * 从相机或者相机选择图片

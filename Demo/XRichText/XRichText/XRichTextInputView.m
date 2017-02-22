@@ -7,9 +7,7 @@
 //
 
 #import "XRichTextInputView.h"
-#import "XRichCollectionView.h"
 #import "XRichCollectionViewFlowLayout.h"
-
 @implementation XRichTextInputView
 {
     CGFloat viewWidth;  //View的宽度
@@ -17,7 +15,7 @@
     XRichBottomView *_bottomView;
     XRichCollectionView *_collectionView;
     XRichCollectionViewFlowLayout *_layout;
-    NSArray *_heightArr;        //保存所有高度信息
+    NSArray *_heightArr;  //保存所有cell高度信息
 }
 -(void)dealloc{
     NSLog(@"XRichTextInputView release");
@@ -36,36 +34,37 @@
     _bottomView.delegate = self;
     [self addSubview:_bottomView];
     _collectionView = [[XRichCollectionView alloc]initWithFrame:CGRectMake(0, 0, viewWidth, viewHeight-44) collectionViewLayout:self.layout];
-    [self initHeightArr];
+    _collectionView.collectionDelegate = self;
     [self addSubview:_collectionView];
 }
 
-
--(UICollectionViewLayout *)layout{
+-(XRichCollectionViewFlowLayout *)layout{
     if(!_layout){
         __weak XRichTextInputView *wself = self;
         _layout = [[XRichCollectionViewFlowLayout alloc]initWithItemsHeightBlock:^CGFloat(NSIndexPath *index) {
-            if (index.item>_heightArr.count-1 || _heightArr.count == 0) {       //当添加图片以后重新计算高度
+            if (index.item>_heightArr.count-1||_heightArr.count == 0) {
                 [wself initHeightArr];
             }
             return [_heightArr[index.item] floatValue];
         }];
-        
     }
     return _layout;
 }
 -(void)initHeightArr{
     NSMutableArray *arr = [NSMutableArray array];
-    CGFloat width = (viewWidth-colMargin*2)/colCount;
+    CGFloat wid = (viewWidth-colMargin*2)/colCount;
     for (NSDictionary *dict in _collectionView.dataArray) {
-        NSNumber *imageHeight = dict[@"height"];
-        NSNumber *imageWidth = dict[@"width"];
-        CGFloat heightValue = width * imageHeight.floatValue/imageWidth.floatValue;
-        [arr addObject:@(heightValue)];
+        if ([dict[@"flag"] isEqualToString:@"1"]) {
+            NSNumber *height = dict[@"height"];
+            NSNumber *width = dict[@"width"];
+            [arr addObject:@(wid*height.floatValue/width.floatValue)];
+        }else{
+            NSNumber *height = dict[@"height"];
+            [arr addObject:@(height.floatValue)];
+        }
     }
     _heightArr = [arr copy];
 }
-
 /*
  * 选择图片响应动作
  */
@@ -84,5 +83,15 @@
  */
 -(void)addImage:(UIImage *)image{
     [_collectionView addImage:image];
+}
+/*
+ * 添加文字
+ */
+-(void)addText:(NSString *)text{
+    [_collectionView addText:text];
+}
+#pragma mark - XRichCollectionViewDelegate
+-(void)textHeightChange{
+
 }
 @end
