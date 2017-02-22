@@ -7,7 +7,7 @@
 
 typedef  CGFloat(^itemHeightBlock)(NSIndexPath* index);
 
-@interface XRichCollectionViewFlowLayout : UICollectionViewLayout
+@interface XRichCollectionViewFlowLayout : UICollectionViewFlowLayout
 //数组存放每列的总高度
 @property(nonatomic,strong)NSMutableArray* colsHeight;
 //单元格宽度

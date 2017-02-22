@@ -92,6 +92,7 @@
 }
 #pragma mark - XRichCollectionViewDelegate
 -(void)textHeightChange{
-
+    [self initHeightArr];
+    //[_layout prepareLayout];
 }
 @end

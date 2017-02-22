@@ -92,6 +92,7 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
 #pragma mark - XRichTextCellDelegate
 -(void)textHeightChange{
     [_collectionDelegate textHeightChange];
+    [self setContentOffset:CGPointMake(0, self.contentOffset.y+10)];
 }
 @end
 
