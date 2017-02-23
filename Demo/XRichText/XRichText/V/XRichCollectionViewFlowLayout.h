@@ -17,4 +17,5 @@ typedef  CGFloat(^itemHeightBlock)(NSIndexPath* index);
 
 -(instancetype)initWithItemsHeightBlock:(itemHeightBlock)block;
 
+@property (nonatomic) CGFloat contentHeight;
 @end

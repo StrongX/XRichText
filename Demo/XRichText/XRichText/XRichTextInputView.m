@@ -93,6 +93,16 @@
 #pragma mark - XRichCollectionViewDelegate
 -(void)textHeightChange{
     [self initHeightArr];
-    //[_layout prepareLayout];
+}
+-(NSInteger)returnTheItemSelected:(CGFloat)y{
+    CGFloat offset = y;
+    CGFloat nowY = 0;
+    for (int i = 0; i<_heightArr.count; i++) {
+        if (nowY<offset && nowY+((NSNumber *)_heightArr[i]).floatValue>offset) {
+            return i;
+        }
+        nowY+=((NSNumber *)_heightArr[i]).floatValue;
+    }
+    return 0;
 }
 @end

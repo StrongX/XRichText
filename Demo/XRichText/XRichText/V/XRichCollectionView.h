@@ -14,7 +14,7 @@
 @protocol XRichCollectionViewDelegate <NSObject>
 
 -(void)textHeightChange;
-
+-(NSInteger)returnTheItemSelected:(CGFloat)y;
 @end
 
 @interface XRichCollectionView : UICollectionView<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,KeyBoardDlegate,XRichTextCellDelegate>

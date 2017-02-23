@@ -62,6 +62,9 @@
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo NS_DEPRECATED_IOS(2_0, 3_0){
     [_richTextView addImage:image];
+    [_richTextView addImage:image];
+    [_richTextView addImage:image];
+
     [picker dismissViewControllerAnimated:true completion:^{
         
     }];

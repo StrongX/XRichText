@@ -18,10 +18,12 @@
 }
 -(void)prepareLayout{
     [super prepareLayout];
+    NSLog(@"----------------------");
     self.colWidth =( self.collectionView.frame.size.width - (colCount+1)*colMargin )/colCount;
     _contentHeight = 0;
 }
 -(CGSize)collectionViewContentSize{
+    NSLog(@"_contentHeight:%f",_contentHeight);
     return CGSizeMake(self.collectionView.frame.size.width, _contentHeight);
 }
 -(UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -32,7 +34,8 @@
     attr.frame= CGRectMake(colMargin, _contentHeight, self.colWidth, height);
 
     _contentHeight+=(height+colMargin);
-    
+    NSLog(@"%@",attr);
+
     return attr;
 }
 -(NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect{

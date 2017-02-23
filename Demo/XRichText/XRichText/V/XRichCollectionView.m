@@ -7,14 +7,21 @@
 //
 
 #import "XRichCollectionView.h"
-
+#import "XRichCollectionViewFlowLayout.h"
 static NSString *ImageCellIdentify = @"ImageCellIdentify";
 static NSString *TextCellIdentify = @"TextCellIdentify";
 
 @implementation XRichCollectionView
-
--(id)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout{
-    self = [super initWithFrame:frame collectionViewLayout:layout];
+{
+    NSIndexPath *dragIndexPath;
+    NSIndexPath *moveToIndexPath;  //交换后的indexpath，防止重复交换
+    UICollectionViewFlowLayout *_layout;
+   
+}
+-(id)initWithFrame:(CGRect)frame collectionViewLayout:(XRichCollectionViewFlowLayout *)layout{
+    _layout = [UICollectionViewFlowLayout new];
+    self = [super initWithFrame:frame collectionViewLayout:_layout];
+   // _layout = layout;
     [self initUI];
     return self;
 }
@@ -27,6 +34,7 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     self.dataSource = self;
     [XKeyBoard registerKeyBoardHide:self];
     [XKeyBoard registerKeyBoardShow:self];
+   
 }
 
 /*
@@ -56,6 +64,9 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     if ([data[@"flag"] isEqualToString:@"1"]) {   //表明是图片
         XRichTextImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellIdentify forIndexPath:indexPath];
         cell.dataSource = data;
+        //添加长按手势
+        UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handlelongGesture:)];
+        [cell addGestureRecognizer:longGesture];
         return cell;
     }else{
         __weak XRichCollectionView *wself = self;
@@ -65,9 +76,35 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
         cell.refreshBlock = ^{
             [wself reloadData];
         };
+        //添加长按手势
+        UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handlelongGesture:)];
+        [cell addGestureRecognizer:longGesture];
+
         return cell;
     }
     
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    CGFloat wid = self.frame.size.width-30;
+    NSDictionary *dict = _dataArray[indexPath.item];
+    if ([dict[@"flag"] isEqualToString:@"1"]) {
+        NSNumber *height = dict[@"height"];
+        NSNumber *width = dict[@"width"];
+        return CGSizeMake(wid, wid*height.floatValue/width.floatValue);
+    }else{
+        NSNumber *height = dict[@"height"];
+        return CGSizeMake(wid, height.floatValue);
+    }
+}
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    return UIEdgeInsetsMake(15, 15, 15, 15);
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
+    return 15;
+}
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
+    return 15;
 }
 
 #pragma  mark - KeyBoardDlegate
@@ -92,8 +129,109 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
 #pragma mark - XRichTextCellDelegate
 -(void)textHeightChange{
     [_collectionDelegate textHeightChange];
-    [self setContentOffset:CGPointMake(0, self.contentOffset.y+10)];
+    [_layout invalidateLayout];
 }
+
+
+
+- (void)handlelongGesture:(UILongPressGestureRecognizer *)longGesture {
+    //判断手势状态
+    switch (longGesture.state) {
+        case UIGestureRecognizerStateBegan:{
+            NSIndexPath *indexPath = [self indexPathForCell:(UICollectionViewCell *)longGesture.view];
+            dragIndexPath = indexPath;
+            NSLog(@"开始拖动:%ld",dragIndexPath.item);
+         //   [self beginInteractiveMovementForItemAtIndexPath:indexPath];
+        }
+            break;
+        case UIGestureRecognizerStateChanged:{
+            NSInteger item = [_collectionDelegate returnTheItemSelected:[longGesture locationInView:self].y];
+        //    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:0];
+            NSIndexPath *indexPath = [self indexPathForItemAtPoint:[longGesture locationInView:self]];
+            if (!indexPath) {
+                NSLog(@"cell 不存在");
+                return;
+            }
+            if (dragIndexPath.item != indexPath.item) {
+                NSLog(@"交换：%ld and %ld",dragIndexPath.item,indexPath.item);
+                
+                [self replaceData:dragIndexPath.item toItem:indexPath.item];
+                [self moveItemAtIndexPath:dragIndexPath toIndexPath:indexPath];
+                [self updateInteractiveMovementTargetPosition:[longGesture locationInView:self]];
+                moveToIndexPath = indexPath;
+                dragIndexPath = indexPath;
+            }
+        }
+            break;
+        case UIGestureRecognizerStateEnded:
+            [self endInteractiveMovement];
+            break;
+        default:
+            [self cancelInteractiveMovement];
+            break;
+    }
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath{
+    return false;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath*)destinationIndexPath {
+}
+-(void)replaceData:(NSInteger)item toItem:(NSInteger)toItem{
+    //取出源item数据
+    id objc = [_dataArray objectAtIndex:item];
+    //从资源数组中移除该数据
+    [_dataArray removeObject:objc];
+    //将数据插入到资源数组中的目标位置上
+    [_dataArray insertObject:objc atIndex:toItem];
+    [_collectionDelegate textHeightChange];
+   
+}
+
+
+/*
+- (void)handlelongGesture:(UILongPressGestureRecognizer *)longGesture {
+    //判断手势状态
+    switch (longGesture.state) {
+        case UIGestureRecognizerStateBegan:{
+            //判断手势落点位置是否在路径上
+            NSIndexPath *indexPath = [self indexPathForItemAtPoint:[longGesture locationInView:self]];
+            if (indexPath == nil) {
+                break;
+            }
+            //在路径上则开始移动该路径上的cell
+            [self beginInteractiveMovementForItemAtIndexPath:indexPath];
+        }
+            break;
+        case UIGestureRecognizerStateChanged:
+            //移动过程当中随时更新cell位置
+            [self updateInteractiveMovementTargetPosition:[longGesture locationInView:self]];
+            break;
+        case UIGestureRecognizerStateEnded:
+            //移动结束后关闭cell移动
+            [self endInteractiveMovement];
+            break;
+        default:
+            [self cancelInteractiveMovement];
+            break;
+    }
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath{
+    //返回YES允许其item移动
+    return YES;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath*)destinationIndexPath {
+    //取出源item数据
+    id objc = [_dataArray objectAtIndex:sourceIndexPath.item];
+    //从资源数组中移除该数据
+    [_dataArray removeObject:objc];
+    //将数据插入到资源数组中的目标位置上
+    [_dataArray insertObject:objc atIndex:destinationIndexPath.item];
+}
+ */
 @end
 
 
