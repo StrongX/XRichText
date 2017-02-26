@@ -15,6 +15,7 @@
 
 -(void)textHeightChange;
 -(NSInteger)returnTheItemSelected:(CGFloat)y;
+-(void)replaceImage:(NSIndexPath *)indexPath;
 @end
 
 @interface XRichCollectionView : UICollectionView<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,KeyBoardDlegate,XRichTextCellDelegate>
@@ -29,6 +30,10 @@
  * 添加文字
  */
 -(void)addText:(NSString *)text;
+/*
+ * 替换图片
+ */
+-(void)replaceImage:(UIImage *)image indexPaht:(NSIndexPath *)indexPath;
 
 @property (nonatomic, strong) id<XRichCollectionViewDelegate> collectionDelegate;
 

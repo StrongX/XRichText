@@ -90,6 +90,12 @@
 -(void)addText:(NSString *)text{
     [_collectionView addText:text];
 }
+/*
+ * 替换图片
+ */
+-(void)replaceImage:(UIImage *)image indexPaht:(NSIndexPath *)indexPath{
+    [_collectionView replaceImage:image indexPaht:indexPath];
+}
 #pragma mark - XRichCollectionViewDelegate
 -(void)textHeightChange{
     [self initHeightArr];
@@ -104,5 +110,8 @@
         nowY+=((NSNumber *)_heightArr[i]).floatValue;
     }
     return 0;
+}
+-(void)replaceImage:(NSIndexPath *)indexPath{
+    [_delegate replaceImage:indexPath];
 }
 @end

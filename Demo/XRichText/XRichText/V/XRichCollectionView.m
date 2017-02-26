@@ -17,7 +17,8 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     NSIndexPath *dragIndexPath;
     NSIndexPath *moveToIndexPath;  //交换后的indexpath，防止重复交换
     UICollectionViewFlowLayout *_layout;
-    NSDictionary *_selectedData;   //选中的数据源
+    NSMutableDictionary *_selectedData;   //选中的数据源
+    UICollectionViewCell *_selectedCell;  //选中的cell
    
 }
 -(id)initWithFrame:(CGRect)frame collectionViewLayout:(XRichCollectionViewFlowLayout *)layout{
@@ -117,7 +118,8 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     CGRect cellRect = [self convertRect:cell.frame toView:self];
     NSLog(@"x:%f,y:%f",cellRect.origin.x,cellRect.origin.y);
     [cell becomeFirstResponder];
-    _selectedData = _dataArray[indexPath.row];
+    _selectedData = [_dataArray[indexPath.row] mutableCopy];
+    _selectedCell = cell;
     [self showMenu:cellRect];
 }
 -(void)showMenu:(CGRect)cellRect{
@@ -133,7 +135,12 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     [menu setMenuVisible:true animated:true];
 }
 -(void)replaceImage{
-    
+    [_collectionDelegate replaceImage:[self indexPathForCell:_selectedCell]];
+}
+-(void)replaceImage:(UIImage *)image indexPaht:(NSIndexPath *)indexPath{
+    _selectedData[@"image"] = image;
+    [_dataArray replaceObjectAtIndex:indexPath.row withObject:_selectedData];
+    [self reloadData];
 }
 -(void)cutImage{
     

@@ -15,6 +15,8 @@
 -(void)XRichchoiceImage;  //选择图片
 
 -(void)XRichchoiceText;    //选择文本
+
+-(void)replaceImage:(NSIndexPath *)indexPath;  //替换图片
 @end
 
 @interface XRichTextInputView : UIView<XRichBottomViewDelegate,XRichCollectionViewDelegate>
@@ -34,5 +36,9 @@
  * 添加文字
  */
 -(void)addText:(NSString *)text;
+/*
+ * 替换图片
+ */
+-(void)replaceImage:(UIImage *)image indexPaht:(NSIndexPath *)indexPath;
 
 @end
