@@ -70,7 +70,8 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
         //添加长按手势
         UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handlelongGesture:)];
         [cell addGestureRecognizer:longGesture];
-        return cell;
+        
+                return cell;
     }else{
         __weak XRichCollectionView *wself = self;
         XRichTextCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:TextCellIdentify forIndexPath:indexPath];
@@ -82,6 +83,9 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
         //添加长按手势
         UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handlelongGesture:)];
         [cell addGestureRecognizer:longGesture];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(selectTextCell:)];
+        cell.textView.userInteractionEnabled = true;
+        [cell.textView addGestureRecognizer:tap];
 
         return cell;
     }
@@ -122,14 +126,35 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     _selectedCell = cell;
     [self showMenu:cellRect];
 }
+/*
+ * 选中文本编辑框
+ */
+-(void)selectTextCell:(UITapGestureRecognizer *)tap{
+    UICollectionViewCell *cell = (UICollectionViewCell *)[[tap.view superview] superview];
+    //获取cell相对屏幕的位置
+    CGRect cellRect = [self convertRect:cell.frame toView:self];
+    NSLog(@"x:%f,y:%f",cellRect.origin.x,cellRect.origin.y);
+    [cell becomeFirstResponder];
+    _selectedData = [_dataArray[[self indexPathForCell:cell].row] mutableCopy];
+    _selectedCell = cell;
+    [self showMenu:cellRect];
+}
 -(void)showMenu:(CGRect)cellRect{
    
     UIMenuController *menu = [UIMenuController sharedMenuController];
-    menu.menuItems = @[
-                       [[UIMenuItem alloc]initWithTitle:@"剪裁" action:@selector(cutImage)],
-                       [[UIMenuItem alloc]initWithTitle:@"替换" action:@selector(replaceImage)],
-                       [[UIMenuItem alloc]initWithTitle:@"删除" action:@selector(deleteImage)],
-                       ];
+    if ([_selectedCell isKindOfClass:[XRichTextImageCell class]]) {
+        menu.menuItems = @[
+                           [[UIMenuItem alloc]initWithTitle:@"剪裁" action:@selector(cutImage)],
+                           [[UIMenuItem alloc]initWithTitle:@"替换" action:@selector(replaceImage)],
+                           [[UIMenuItem alloc]initWithTitle:@"删除" action:@selector(deleteImage)],
+                           ];
+    }else{
+        menu.menuItems = @[
+                           [[UIMenuItem alloc]initWithTitle:@"编辑" action:@selector(editTextView)],
+                           [[UIMenuItem alloc]initWithTitle:@"删除" action:@selector(deleteTextView)],
+                           ];
+    }
+    
     [self becomeFirstResponder];
     [menu setTargetRect:cellRect inView:self];
     [menu setMenuVisible:true animated:true];
@@ -143,7 +168,15 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     [self reloadData];
 }
 -(void)cutImage{
-    
+    _selectedData[@"cut"] = @"1";
+    [_dataArray replaceObjectAtIndex:[self indexPathForCell:_selectedCell].row withObject:_selectedData];
+    [self reloadData];
+}
+-(void)deleteTextView{
+
+}
+-(void)editTextView{
+
 }
 -(void)deleteImage{
     [_dataArray removeObject:_selectedData];

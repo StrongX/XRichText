@@ -26,10 +26,10 @@
     _textView = [[UITextView alloc]init];
     _textView.translatesAutoresizingMaskIntoConstraints = false;
     _textView.delegate = self;
-    _textView.layer.borderColor = [[UIColor grayColor] CGColor];
-    _textView.layer.borderWidth = .5;
-    _textView.layer.cornerRadius = 10;
-    _textView.layer.masksToBounds = true;
+   // _textView.layer.borderColor = [[UIColor grayColor] CGColor];
+   // _textView.layer.borderWidth = .5;
+   // _textView.layer.cornerRadius = 10;
+   // _textView.layer.masksToBounds = true;
     [self.contentView addSubview:_textView];
     _textView.contentMode = UIViewContentModeScaleAspectFill;
     _textView.layer.masksToBounds = true;
@@ -64,6 +64,8 @@
         [_delegate textHeightChange];
     }
 }
-
+-(BOOL)canBecomeFirstResponder{
+    return true;
+}
 
 @end

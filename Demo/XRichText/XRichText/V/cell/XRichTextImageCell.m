@@ -9,6 +9,9 @@
 #import "XRichTextImageCell.h"
 
 @implementation XRichTextImageCell
+{
+    UIImageView *_cutImage;
+}
 -(id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     [self initUI];
@@ -16,6 +19,9 @@
 }
 -(void)initUI{
     self.backgroundColor = [UIColor whiteColor];
+    _cutImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,self.frame.size.width,self.frame.size.height)];
+    // 调用方法 返回的iamge就是虚线
+    _cutImage.image = [self drawLineByImageView:_cutImage];
     [self initImageView];
     
 }
@@ -44,6 +50,11 @@
 -(void)setDataSource:(NSDictionary *)dataSource{
     _dataSource = dataSource;
     _imageView.image = dataSource[@"image"];
+    if ([_dataSource[@"cut"] isEqualToString:@"1"]) {
+        [self.contentView addSubview:_cutImage];
+    }else{
+        [_cutImage removeFromSuperview];
+    }
 }
 -(void)setSelected:(BOOL)selected{
     [super setSelected:selected];
@@ -52,7 +63,25 @@
     return true;
 }
 
-
+// 返回虚线image的方法
+- (UIImage *)drawLineByImageView:(UIImageView *)imageView{
+    UIGraphicsBeginImageContext(imageView.frame.size); //开始画线 划线的frame
+    [imageView.image drawInRect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)];
+    //设置线条终点形状
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    // 5是每个虚线的长度 1是高度
+    CGFloat lengths[] = {5,1};
+    CGContextRef line = UIGraphicsGetCurrentContext();
+    // 设置颜色
+    CGContextSetStrokeColorWithColor(line, [UIColor blackColor].CGColor);
+    CGContextSetLineDash(line, 0, lengths, 2); //画虚线
+    CGContextMoveToPoint(line, 0.0, 2.0); //开始画线
+    CGContextAddLineToPoint(line, self.frame.size.width, 2.0);
+    
+    CGContextStrokePath(line);
+    // UIGraphicsGetImageFromCurrentImageContext()返回的就是image
+    return UIGraphicsGetImageFromCurrentImageContext();
+}
 
 @end
 
