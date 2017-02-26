@@ -8,6 +8,7 @@
 
 #import "XRichCollectionView.h"
 #import "XRichCollectionViewFlowLayout.h"
+
 static NSString *ImageCellIdentify = @"ImageCellIdentify";
 static NSString *TextCellIdentify = @"TextCellIdentify";
 
@@ -106,7 +107,40 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
     return 15;
 }
+/*
+ * cell点击事件
+ */
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
+    //获取cell相对屏幕的位置
+    CGRect cellRect = [self convertRect:cell.frame toView:self];
+    NSLog(@"x:%f,y:%f",cellRect.origin.x,cellRect.origin.y);
+    [cell becomeFirstResponder];
+    [self showMenu:cellRect];
+}
+-(void)showMenu:(CGRect)cellRect{
+    //if (cellRect.origin.y<60) {
+      //  cellRect.origin.y = 60;
+    //}
+    UIMenuController *menu = [UIMenuController sharedMenuController];
+    menu.menuItems = @[
+                       [[UIMenuItem alloc]initWithTitle:@"剪裁" action:@selector(cutImage)],
+                       [[UIMenuItem alloc]initWithTitle:@"替换" action:@selector(replaceImage)],
+                       [[UIMenuItem alloc]initWithTitle:@"删除" action:@selector(deleteImage)],
+                       ];
+    [self becomeFirstResponder];
+    [menu setTargetRect:cellRect inView:self];
+    [menu setMenuVisible:true animated:true];
+}
+-(void)replaceImage{
+    
+}
+-(void)cutImage{
+    
+}
+-(void)deleteImage{
 
+}
 #pragma  mark - KeyBoardDlegate
 
 -(void)keyboardWillHideNotification:(NSNotification *)notification{
@@ -140,12 +174,12 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
         case UIGestureRecognizerStateBegan:{
             NSIndexPath *indexPath = [self indexPathForCell:(UICollectionViewCell *)longGesture.view];
             dragIndexPath = indexPath;
-            NSLog(@"开始拖动:%ld",dragIndexPath.item);
+            NSLog(@"开始拖动:%ld",(long)dragIndexPath.item);
          //   [self beginInteractiveMovementForItemAtIndexPath:indexPath];
         }
             break;
         case UIGestureRecognizerStateChanged:{
-            NSInteger item = [_collectionDelegate returnTheItemSelected:[longGesture locationInView:self].y];
+         //   NSInteger item = [_collectionDelegate returnTheItemSelected:[longGesture locationInView:self].y];
         //    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:0];
             NSIndexPath *indexPath = [self indexPathForItemAtPoint:[longGesture locationInView:self]];
             if (!indexPath) {
@@ -153,7 +187,7 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
                 return;
             }
             if (dragIndexPath.item != indexPath.item) {
-                NSLog(@"交换：%ld and %ld",dragIndexPath.item,indexPath.item);
+                NSLog(@"交换：%ld and %ld",(long)dragIndexPath.item,indexPath.item);
                 
                 [self replaceData:dragIndexPath.item toItem:indexPath.item];
                 [self moveItemAtIndexPath:dragIndexPath toIndexPath:indexPath];

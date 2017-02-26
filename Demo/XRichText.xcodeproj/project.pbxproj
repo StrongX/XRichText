@@ -189,6 +189,7 @@
 		2AB4737B1E5BE5DF00A2F896 /* XRichText */ = {
 			isa = PBXGroup;
 			children = (
+				2ACA68D11E615047002C218F /* XMenuController */,
 				2AB473AA1E5D515A00A2F896 /* M */,
 				2AB473981E5C4C9700A2F896 /* V */,
 				2AB473871E5C466800A2F896 /* Images */,
@@ -233,13 +234,13 @@
 		2AB473981E5C4C9700A2F896 /* V */ = {
 			isa = PBXGroup;
 			children = (
-				2ACA68A91E5DDAC8002C218F /* XRichCollectionViewFlowLayout.h */,
-				2ACA68AA1E5DDAC8002C218F /* XRichCollectionViewFlowLayout.m */,
 				2AB473A01E5C984500A2F896 /* cell */,
 				2AB473991E5C4CCE00A2F896 /* XRichBottomView.h */,
 				2AB4739A1E5C4CCE00A2F896 /* XRichBottomView.m */,
 				2AB4739C1E5C5B6E00A2F896 /* XRichCollectionView.h */,
 				2AB4739D1E5C5B6E00A2F896 /* XRichCollectionView.m */,
+				2ACA68A91E5DDAC8002C218F /* XRichCollectionViewFlowLayout.h */,
+				2ACA68AA1E5DDAC8002C218F /* XRichCollectionViewFlowLayout.m */,
 			);
 			path = V;
 			sourceTree = "<group>";
@@ -270,6 +271,13 @@
 				2AB473AD1E5D515A00A2F896 /* XKeyBoard.m */,
 			);
 			path = XKeyboard;
+			sourceTree = "<group>";
+		};
+		2ACA68D11E615047002C218F /* XMenuController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = XMenuController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

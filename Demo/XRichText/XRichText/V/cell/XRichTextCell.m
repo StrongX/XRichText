@@ -48,6 +48,8 @@
 -(void)setDataSource:(NSMutableDictionary *)dataSource{
     _dataSource = dataSource;
     _textView.text = dataSource[@"text"];
+    _textView.editable = false;
+    _textView.scrollEnabled = false;
 }
 #pragma mark - TextViewDelegate
 - (void)textViewDidChange:(UITextView *)textView{

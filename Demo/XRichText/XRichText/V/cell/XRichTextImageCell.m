@@ -45,5 +45,16 @@
     _dataSource = dataSource;
     _imageView.image = dataSource[@"image"];
 }
+-(void)setSelected:(BOOL)selected{
+    [super setSelected:selected];
+}
+-(BOOL)canBecomeFirstResponder{
+    return true;
+}
+
+
 
 @end
+
+
+
