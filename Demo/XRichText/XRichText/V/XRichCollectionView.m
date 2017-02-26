@@ -17,6 +17,7 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     NSIndexPath *dragIndexPath;
     NSIndexPath *moveToIndexPath;  //交换后的indexpath，防止重复交换
     UICollectionViewFlowLayout *_layout;
+    NSDictionary *_selectedData;   //选中的数据源
    
 }
 -(id)initWithFrame:(CGRect)frame collectionViewLayout:(XRichCollectionViewFlowLayout *)layout{
@@ -116,12 +117,11 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     CGRect cellRect = [self convertRect:cell.frame toView:self];
     NSLog(@"x:%f,y:%f",cellRect.origin.x,cellRect.origin.y);
     [cell becomeFirstResponder];
+    _selectedData = _dataArray[indexPath.row];
     [self showMenu:cellRect];
 }
 -(void)showMenu:(CGRect)cellRect{
-    //if (cellRect.origin.y<60) {
-      //  cellRect.origin.y = 60;
-    //}
+   
     UIMenuController *menu = [UIMenuController sharedMenuController];
     menu.menuItems = @[
                        [[UIMenuItem alloc]initWithTitle:@"剪裁" action:@selector(cutImage)],
@@ -139,7 +139,8 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     
 }
 -(void)deleteImage{
-
+    [_dataArray removeObject:_selectedData];
+    [self reloadData];
 }
 #pragma  mark - KeyBoardDlegate
 
