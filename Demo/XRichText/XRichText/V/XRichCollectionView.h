@@ -10,6 +10,7 @@
 #import "XKeyBoard.h"
 #import "XRichTextImageCell.h"
 #import "XRichTextCell.h"
+#import "XCollectionViewFlowLayout.h"
 
 @protocol XRichCollectionViewDelegate <NSObject>
 
@@ -18,9 +19,10 @@
 -(void)replaceImage:(NSIndexPath *)indexPath;
 @end
 
-@interface XRichCollectionView : UICollectionView<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,KeyBoardDlegate,XRichTextCellDelegate>
+@interface XRichCollectionView : UICollectionView<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,KeyBoardDlegate,XRichTextCellDelegate,XCollectionViewFlowLayoutDataSource,XCollectionViewFlowLayoutDelegate>
 
 @property(nonatomic,strong) NSMutableArray *dataArray;
+
 
 /*
  * 添加图片

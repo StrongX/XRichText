@@ -7,20 +7,24 @@
 //
 
 #import "XRichTextInputView.h"
-#import "XRichCollectionViewFlowLayout.h"
+#import "XCollectionViewFlowLayout.h"
+
 @implementation XRichTextInputView
 {
     CGFloat viewWidth;  //View的宽度
     CGFloat viewHeight; //View的高度
     XRichBottomView *_bottomView;
     XRichCollectionView *_collectionView;
-    XRichCollectionViewFlowLayout *_layout;
+    XCollectionViewFlowLayout *_layout;
     NSArray *_heightArr;  //保存所有cell高度信息
 }
 -(void)dealloc{
     NSLog(@"XRichTextInputView release");
 }
-
++(instancetype)shareInstance:(CGRect)rect{
+    XRichTextInputView *inputView = [[XRichTextInputView alloc]initWithFrame:rect];
+    return inputView;
+}
 -(id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     viewWidth = frame.size.width;
@@ -33,37 +37,13 @@
     _bottomView = [XRichBottomView getShareInstanceWidth:viewWidth Y:viewHeight-44];
     _bottomView.delegate = self;
     [self addSubview:_bottomView];
-    _collectionView = [[XRichCollectionView alloc]initWithFrame:CGRectMake(0, 0, viewWidth, viewHeight-44) collectionViewLayout:self.layout];
+    _layout = [XCollectionViewFlowLayout new];
+    _layout.columnCount = 1;
+    _layout.offset = 15;
+    
+    _collectionView = [[XRichCollectionView alloc]initWithFrame:CGRectMake(0, 0, viewWidth, viewHeight-44) collectionViewLayout:_layout];
     _collectionView.collectionDelegate = self;
     [self addSubview:_collectionView];
-}
-
--(XRichCollectionViewFlowLayout *)layout{
-    if(!_layout){
-        __weak XRichTextInputView *wself = self;
-        _layout = [[XRichCollectionViewFlowLayout alloc]initWithItemsHeightBlock:^CGFloat(NSIndexPath *index) {
-            if (index.item>_heightArr.count-1||_heightArr.count == 0) {
-                [wself initHeightArr];
-            }
-            return [_heightArr[index.item] floatValue];
-        }];
-    }
-    return _layout;
-}
--(void)initHeightArr{
-    NSMutableArray *arr = [NSMutableArray array];
-    CGFloat wid = (viewWidth-colMargin*2)/colCount;
-    for (NSDictionary *dict in _collectionView.dataArray) {
-        if ([dict[@"flag"] isEqualToString:@"1"]) {
-            NSNumber *height = dict[@"height"];
-            NSNumber *width = dict[@"width"];
-            [arr addObject:@(wid*height.floatValue/width.floatValue)];
-        }else{
-            NSNumber *height = dict[@"height"];
-            [arr addObject:@(height.floatValue)];
-        }
-    }
-    _heightArr = [arr copy];
 }
 /*
  * 选择图片响应动作
@@ -98,8 +78,9 @@
 }
 #pragma mark - XRichCollectionViewDelegate
 -(void)textHeightChange{
-    [self initHeightArr];
+
 }
+
 -(NSInteger)returnTheItemSelected:(CGFloat)y{
     CGFloat offset = y;
     CGFloat nowY = 0;

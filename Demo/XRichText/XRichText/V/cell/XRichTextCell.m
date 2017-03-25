@@ -9,7 +9,9 @@
 #import "XRichTextCell.h"
 
 @implementation XRichTextCell
+{
 
+}
 
 -(id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
@@ -23,13 +25,19 @@
     if (_textView) {
         [_textView removeFromSuperview];
     }
+    _lineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,self.frame.size.width,self.frame.size.height)];
+    _lineView.image = [self drawLineByImageView:_lineView];
+    [self.contentView addSubview:_lineView];
+    
     _textView = [[UITextView alloc]init];
+    _textView.font = [UIFont systemFontOfSize:17];
     _textView.translatesAutoresizingMaskIntoConstraints = false;
     _textView.delegate = self;
-   // _textView.layer.borderColor = [[UIColor grayColor] CGColor];
-   // _textView.layer.borderWidth = .5;
-   // _textView.layer.cornerRadius = 10;
-   // _textView.layer.masksToBounds = true;
+    _textView.backgroundColor = [UIColor clearColor];
+ //   _textView.layer.borderColor = [[UIColor grayColor] CGColor];
+ //   _textView.layer.borderWidth = .5;
+ //   _textView.layer.cornerRadius = 10;
+ //   _textView.layer.masksToBounds = true;
     [self.contentView addSubview:_textView];
     _textView.contentMode = UIViewContentModeScaleAspectFill;
     _textView.layer.masksToBounds = true;
@@ -44,12 +52,20 @@
     
     NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:_textView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
     [self.contentView addConstraint:bottomConstraint];
+    
 }
 -(void)setDataSource:(NSMutableDictionary *)dataSource{
     _dataSource = dataSource;
     _textView.text = dataSource[@"text"];
-    _textView.editable = false;
-    _textView.scrollEnabled = false;
+    if ([_dataSource[@"edit"] isEqualToString:@"1"]) {
+        _lineView.hidden = false;
+        _textView.userInteractionEnabled = true;
+        [_textView becomeFirstResponder];
+    }else{
+        _textView.userInteractionEnabled = false;
+        _lineView.hidden = true;
+        [_textView resignFirstResponder];
+    }
 }
 #pragma mark - TextViewDelegate
 - (void)textViewDidChange:(UITextView *)textView{
@@ -61,11 +77,38 @@
         CGRect selfFrame = self.frame;
         selfFrame.size = CGSizeMake(wid, @(_textView.contentSize.height).floatValue);
         self.frame = selfFrame;
+        [_lineView removeFromSuperview];
+        _lineView = nil;
+        _lineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,self.frame.size.width,self.frame.size.height)];
+        _lineView.image = [self drawLineByImageView:_lineView];
+        [self.contentView insertSubview:_lineView belowSubview:_textView];
         [_delegate textHeightChange];
     }
 }
 -(BOOL)canBecomeFirstResponder{
     return true;
+}
+// 返回虚线image的方法
+- (UIImage *)drawLineByImageView:(UIImageView *)imageView{
+    UIGraphicsBeginImageContext(imageView.frame.size); //开始画线 划线的frame
+    [imageView.image drawInRect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)];
+    //设置线条终点形状
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    // 5是每个虚线的长度 1是高度
+    CGFloat lengths[] = {5,0.5};
+    CGContextRef line = UIGraphicsGetCurrentContext();
+    // 设置颜色
+    CGContextSetStrokeColorWithColor(line, [UIColor blackColor].CGColor);
+    CGContextSetLineDash(line, 0, lengths, 2); //画虚线
+    CGContextMoveToPoint(line, 0.0, 0); //开始画线
+    CGContextAddLineToPoint(line, self.frame.size.width, 0);
+    CGContextAddLineToPoint(line, self.frame.size.width, self.frame.size.height);
+    CGContextAddLineToPoint(line, 0, self.frame.size.height);
+    CGContextAddLineToPoint(line, 0, 0);
+
+    CGContextStrokePath(line);
+    // UIGraphicsGetImageFromCurrentImageContext()返回的就是image
+    return UIGraphicsGetImageFromCurrentImageContext();
 }
 
 @end

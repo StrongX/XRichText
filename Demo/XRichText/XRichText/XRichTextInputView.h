@@ -22,11 +22,14 @@
 @interface XRichTextInputView : UIView<XRichBottomViewDelegate,XRichCollectionViewDelegate>
 
 // 禁止使用initWithFrame以外的方法进行初始化
--(instancetype) init __attribute__((unavailable("init not available, initWithFrame instead")));
-+(instancetype) new __attribute__((unavailable("new not available, initWithFrame instead")));
+-(instancetype) init __attribute__((unavailable("init not available, shareInstance instead")));
++(instancetype) new __attribute__((unavailable("new not available, shareInstance instead")));
 
 
 @property (nonatomic, weak) id<XRichTextInputViewDelegate> delegate;
+
+
++(instancetype)shareInstance:(CGRect)rect;
 
 /*
  * 添加图片

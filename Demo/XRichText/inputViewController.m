@@ -27,7 +27,7 @@
 }
 - (void)initUI{
     self.view.backgroundColor = [UIColor  whiteColor];
-    _richTextView = [[XRichTextInputView alloc] initWithFrame:(CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64))];
+    _richTextView = [XRichTextInputView shareInstance:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64)];
     [self.view addSubview:_richTextView];
     _richTextView.delegate = self;
 }
@@ -87,8 +87,6 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo NS_DEPRECATED_IOS(2_0, 3_0){
     if(!_selectedIndex){
         [_richTextView addImage:image];
-        [_richTextView addImage:image];
-        [_richTextView addImage:image];    
     }else{
         [_richTextView replaceImage:image indexPaht:_selectedIndex];
     }

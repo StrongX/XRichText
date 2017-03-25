@@ -23,4 +23,8 @@
 @property (nonatomic ,strong) void(^refreshBlock)();
 
 @property (nonatomic, strong) id<XRichTextCellDelegate>delegate;
+
+@property (nonatomic, strong)  UIImageView *lineView;
+
 @end
+
