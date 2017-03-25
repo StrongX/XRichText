@@ -43,7 +43,7 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
 }
 -(void)moveEndOldIndexPath:(NSIndexPath *)OldIndexPath toMoveIndexPath:(NSIndexPath *)moveIndexPath{
     id objc = [_dataArray objectAtIndex:OldIndexPath.item];
-    [_dataArray removeObject:objc];
+    [_dataArray removeObjectAtIndex:OldIndexPath.item];
     [_dataArray insertObject:objc atIndex:moveIndexPath.item];
     [_collectionDelegate textHeightChange];
 }
@@ -109,7 +109,7 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     CGRect cellRect = [self convertRect:cell.frame toView:self];
     NSLog(@"x:%f,y:%f",cellRect.origin.x,cellRect.origin.y);
     [cell becomeFirstResponder];
-    _selectedData = [_dataArray[indexPath.row] mutableCopy];
+    _selectedData = _dataArray[indexPath.row];
     _selectedCell = cell;
     [self showMenu:cellRect];
 }
@@ -150,7 +150,10 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     [_collectionDelegate replaceImage:[self indexPathForCell:_selectedCell]];
 }
 -(void)replaceImage:(UIImage *)image indexPaht:(NSIndexPath *)indexPath{
+    image = [image imageCompress:1000];
     _selectedData[@"image"] = image;
+    _selectedData[@"height"] = @(image.size.height);
+    _selectedData[@"width"] = @(image.size.width);
     [self reloadData];
 }
 -(void)cutImage{

@@ -30,6 +30,7 @@
     }
     _lineView = [[UIImageView alloc] init];
     _lineView.image = [self drawLineByImageView:_lineView];
+    _lineView.backgroundColor = [UIColor whiteColor];
     _lineView.translatesAutoresizingMaskIntoConstraints = false;
     [self.contentView addSubview:_lineView];
 
