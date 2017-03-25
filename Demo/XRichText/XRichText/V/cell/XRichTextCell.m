@@ -25,22 +25,24 @@
     if (_textView) {
         [_textView removeFromSuperview];
     }
-    _lineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,self.frame.size.width,self.frame.size.height)];
+    if (_lineView) {
+        [_lineView removeFromSuperview];
+    }
+    _lineView = [[UIImageView alloc] init];
     _lineView.image = [self drawLineByImageView:_lineView];
+    _lineView.translatesAutoresizingMaskIntoConstraints = false;
     [self.contentView addSubview:_lineView];
-    
+
     _textView = [[UITextView alloc]init];
+    _textView.backgroundColor = [UIColor clearColor];
     _textView.font = [UIFont systemFontOfSize:17];
     _textView.translatesAutoresizingMaskIntoConstraints = false;
     _textView.delegate = self;
-    _textView.backgroundColor = [UIColor clearColor];
- //   _textView.layer.borderColor = [[UIColor grayColor] CGColor];
- //   _textView.layer.borderWidth = .5;
- //   _textView.layer.cornerRadius = 10;
- //   _textView.layer.masksToBounds = true;
     [self.contentView addSubview:_textView];
     _textView.contentMode = UIViewContentModeScaleAspectFill;
     _textView.layer.masksToBounds = true;
+
+    
     NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:_textView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
     [self.contentView addConstraint:leftConstraint];
     
@@ -53,9 +55,22 @@
     NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:_textView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
     [self.contentView addConstraint:bottomConstraint];
     
+    
+    NSLayoutConstraint *lineViewleftConstraint = [NSLayoutConstraint constraintWithItem:_lineView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+    [self.contentView addConstraint:lineViewleftConstraint];
+    
+    NSLayoutConstraint *lineViewrightConstraint = [NSLayoutConstraint constraintWithItem:_lineView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
+    [self.contentView addConstraint:lineViewrightConstraint];
+    
+    NSLayoutConstraint *lineViewtopConstraint = [NSLayoutConstraint constraintWithItem:_lineView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
+    [self.contentView addConstraint:lineViewtopConstraint];
+    
+    NSLayoutConstraint *lineViewbottomConstraint = [NSLayoutConstraint constraintWithItem:_lineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+    [self.contentView addConstraint:lineViewbottomConstraint];
 }
 -(void)setDataSource:(NSMutableDictionary *)dataSource{
     _dataSource = dataSource;
+    _lineView.image = [self drawLineByImageView:_lineView];
     _textView.text = dataSource[@"text"];
     if ([_dataSource[@"edit"] isEqualToString:@"1"]) {
        // _lineView.hidden = false;
@@ -77,11 +92,7 @@
         CGRect selfFrame = self.frame;
         selfFrame.size = CGSizeMake(wid, @(_textView.contentSize.height).floatValue);
         self.frame = selfFrame;
-        [_lineView removeFromSuperview];
-        _lineView = nil;
-        _lineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0,self.frame.size.width,self.frame.size.height)];
         _lineView.image = [self drawLineByImageView:_lineView];
-        [self.contentView insertSubview:_lineView belowSubview:_textView];
         [_delegate textHeightChange];
     }
 }
@@ -90,8 +101,8 @@
 }
 // 返回虚线image的方法
 - (UIImage *)drawLineByImageView:(UIImageView *)imageView{
-    UIGraphicsBeginImageContext(imageView.frame.size); //开始画线 划线的frame
-    [imageView.image drawInRect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)];
+    UIGraphicsBeginImageContext(self.bounds.size); //开始画线 划线的frame
+//    [imageView.image drawInRect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)];
     //设置线条终点形状
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
     // 5是每个虚线的长度 1是高度
