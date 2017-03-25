@@ -122,7 +122,7 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
     CGRect cellRect = [self convertRect:cell.frame toView:self];
     NSLog(@"x:%f,y:%f",cellRect.origin.x,cellRect.origin.y);
     [cell becomeFirstResponder];
-    _selectedData = [_dataArray[[self indexPathForCell:cell].row] mutableCopy];
+    _selectedData = _dataArray[[self indexPathForCell:cell].row];
     _selectedCell = cell;
     [self showMenu:cellRect];
 }
@@ -151,12 +151,10 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
 }
 -(void)replaceImage:(UIImage *)image indexPaht:(NSIndexPath *)indexPath{
     _selectedData[@"image"] = image;
-    [_dataArray replaceObjectAtIndex:indexPath.row withObject:_selectedData];
     [self reloadData];
 }
 -(void)cutImage{
     _selectedData[@"cut"] = @"1";
-    [_dataArray replaceObjectAtIndex:[self indexPathForCell:_selectedCell].row withObject:_selectedData];
     [self reloadData];
 }
 -(void)deleteTextView{
@@ -165,8 +163,6 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
 }
 -(void)editTextView{
     _selectedData[@"edit"] = @"1";
-    [_dataArray replaceObjectAtIndex:[self indexPathForCell:_selectedCell].row withObject:_selectedData];
-  //  [self reloadData];
     XRichTextCell *cell = (XRichTextCell *)_selectedCell;
     cell.lineView.hidden = false;
     [cell.textView becomeFirstResponder];
