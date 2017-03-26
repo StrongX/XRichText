@@ -39,6 +39,7 @@
     _textView.font = [UIFont systemFontOfSize:17];
     _textView.translatesAutoresizingMaskIntoConstraints = false;
     _textView.delegate = self;
+    _textView.userInteractionEnabled = false;
     [self.contentView addSubview:_textView];
     _textView.contentMode = UIViewContentModeScaleAspectFill;
     _textView.layer.masksToBounds = true;
@@ -75,10 +76,10 @@
     _textView.text = dataSource[@"text"];
     if ([_dataSource[@"edit"] isEqualToString:@"1"]) {
        // _lineView.hidden = false;
-        _textView.userInteractionEnabled = true;
+      //  _textView.userInteractionEnabled = true;
         [_textView becomeFirstResponder];
     }else{
-        _textView.userInteractionEnabled = false;
+      //  _textView.userInteractionEnabled = false;
        // _lineView.hidden = true;
         [_textView resignFirstResponder];
     }
@@ -92,7 +93,7 @@
         CGFloat wid = SCREEN_WIDTH - 30;
         CGRect selfFrame = self.frame;
         selfFrame.size = CGSizeMake(wid, @(_textView.contentSize.height).floatValue);
-        self.frame = selfFrame;
+      //  self.frame = selfFrame;
         _lineView.image = [self drawLineByImageView:_lineView];
         [_delegate textHeightChange];
     }

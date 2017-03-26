@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Input View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="inputViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -20,33 +20,7 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rTG-OL-Lmm">
-                                <rect key="frame" x="149" y="288.5" width="77" height="30"/>
-                                <state key="normal" title="富文本输入">
-                                    <color key="titleColor" red="0.28096367801047117" green="0.28096367801047117" blue="0.28096367801047117" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="showInputViewController:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XVt-VP-0TA"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JvU-GK-s5N">
-                                <rect key="frame" x="149" y="348.5" width="77" height="30"/>
-                                <state key="normal" title="富文本输出">
-                                    <color key="titleColor" red="0.28096367801047117" green="0.28096367801047117" blue="0.28096367801047117" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="showOutputViewController:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ag7-WW-28w"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="rTG-OL-Lmm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2Zk-fW-9Uq"/>
-                            <constraint firstItem="rTG-OL-Lmm" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-30" id="MUh-eB-fe7"/>
-                            <constraint firstItem="JvU-GK-s5N" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="30" id="RMz-yX-6AP"/>
-                            <constraint firstItem="JvU-GK-s5N" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SNc-IM-IGK"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hGE-Ow-OCu"/>
                 </viewController>
