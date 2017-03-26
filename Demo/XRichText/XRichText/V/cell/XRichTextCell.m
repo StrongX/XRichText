@@ -76,10 +76,10 @@
     _textView.text = dataSource[@"text"];
     if ([_dataSource[@"edit"] isEqualToString:@"1"]) {
        // _lineView.hidden = false;
-      //  _textView.userInteractionEnabled = true;
+        _textView.userInteractionEnabled = true;
         [_textView becomeFirstResponder];
     }else{
-      //  _textView.userInteractionEnabled = false;
+        _textView.userInteractionEnabled = false;
        // _lineView.hidden = true;
         [_textView resignFirstResponder];
     }

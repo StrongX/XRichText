@@ -167,7 +167,7 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
 -(void)editTextView{
     _selectedData[@"edit"] = @"1";
     XRichTextCell *cell = (XRichTextCell *)_selectedCell;
-    cell.lineView.hidden = false;
+    cell.textView.userInteractionEnabled = true;
     [cell.textView becomeFirstResponder];
 }
 -(void)deleteImage{
@@ -178,6 +178,10 @@ static NSString *TextCellIdentify = @"TextCellIdentify";
 
 -(void)keyboardWillHideNotification:(NSNotification *)notification{
     double keyboardDuration = [XKeyBoard returnKeyBoardDuration:notification];
+    _selectedData[@"edit"] = @"0";
+    XRichTextCell *cell = (XRichTextCell *)_selectedCell;
+    cell.textView.userInteractionEnabled = false;
+    [cell.textView resignFirstResponder];
     
     [UIView animateWithDuration:keyboardDuration animations:^{
         [self setContentInset:UIEdgeInsetsZero];
